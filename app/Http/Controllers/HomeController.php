@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
+use QrCode;
 
 class HomeController extends Controller
 {
@@ -24,8 +25,12 @@ class HomeController extends Controller
 		$image->insert($image_logo, 'top', 0, 180);
 
         // Aqui tomamos la imagen del codigo qr, se le asigna el tamaño que se pide y luego la insertamos en la imagen de plantilla.
+        // En la linea 29 se esta generando y guardando un codigoQR en un archivo temporal
+        QrCode::format('png')->size(399)->generate('http://app.olaclick.com/es/dev', $company_qr_path);
         $image_qr = Image::make($company_qr_path)->resize(200, 200);
 		$image->insert($image_qr, 'bottom', 0, 180);
+        // Aqui solo estamos eliminando el archivo temporal donde se guardo el codigoQR
+        unlink($company_qr_path);
 		// Al intentar usar las coordenadas del correo no quedaban como la imagen de ejemplo que se mandaba, por lo que tuve que usar otras coordenadas de acuerdo a lo que decia la documentacion. http://image.intervention.io/api/insert
 
         return $image->response();
