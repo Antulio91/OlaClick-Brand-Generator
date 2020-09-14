@@ -27,7 +27,7 @@ class HomeController extends Controller
         // Aqui tomamos la imagen del codigo qr, se le asigna el tamaño que se pide y luego la insertamos en la imagen de plantilla.
         // En la linea 29 se esta generando y guardando un codigoQR en un archivo temporal
         QrCode::format('png')->size(399)->generate('http://app.olaclick.com/es/dev', $company_qr_path);
-        $image_qr = Image::make($company_qr_path)->resize(200, 200);
+        $image_qr = Image::make($company_qr_path)->resize(210, 210);
 		$image->insert($image_qr, 'bottom', 0, 180);
         // Aqui solo estamos eliminando el archivo temporal donde se guardo el codigoQR
         unlink($company_qr_path);
